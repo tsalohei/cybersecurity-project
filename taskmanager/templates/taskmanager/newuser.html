@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Taskmanager</title>
+    </head>
+
+    <body>
+        <h1>Create account</h1>
+
+        <form action="newuser/" method="POST">
+            {% csrf_token %}
+            Username: <input type="text" name="username"/> <br />
+            Password: <input type="text" name="password"/> <br />
+            Firstname: <input type="text" name="firstname"/> <br />
+            Lastname: <input type="text" name="lastname"/> <br />
+            <input type="submit"/>
+        </form>
+
+    </body>
+</html>

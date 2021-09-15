@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Task Manager</title>
+    </head>
+
+    <body>
+        <h1>Login</h1>
+<!--
+        <form action="/taskmanager/loginform/login/" method="POST">
+            {% csrf_token %}
+            Username: <input type="text" name="username"/> <br />
+            Password: <input type="text" name="password"/> <br />
+
+            <input type="submit"/>
+        </form>
+-->     <form action="/taskmanager/user/" method="POST">
+            {% csrf_token %}
+            Username: <input type="text" name="username"/> <br />
+            Password: <input type="text" name="password"/> <br />
+
+            <!--LISÄYS JOTAIN TÄLLAISTA-->
+            <!--<input name="owner" type="hidden" value=>-->
+
+            <input type="submit"/>
+        </form>
+    </body>
+</html>

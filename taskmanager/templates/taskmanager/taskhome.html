@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Taskmanager</title>
+    </head>
+
+    <body>
+        <h1>Taskmanager</h1>
+
+        <h2>Welcome, {{person.firstname}} </h2>
+
+<!-- LOGOUT -toiminnallisuus -->
+
+    <h3>Your tasks</h3>
+        <ul>
+          {% for task in tasks %}
+          <li>{{task.title}}: {{task.content}}</li>
+          {% endfor %}
+        </ul>
+
+
+
+    <h3>Add a new task</h4>
+
+        <form action="/taskmanager/user/addtask/" method="POST">
+            {% csrf_token %}
+            title: <input type="text" name="title"/> <br />
+            content: <input type="text" name="content"/> <br />
+            <input name="owner" type="hidden" value={{person.username}}>
+            <input type="submit"/>
+        </form>
+
+
+
+
+    </body>
+</html>
