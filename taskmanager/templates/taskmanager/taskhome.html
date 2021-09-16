@@ -9,16 +9,12 @@
 
         <h2>Welcome, {{person.firstname}} </h2>
 
-<!-- LOGOUT -toiminnallisuus -->
-
     <h3>Your tasks</h3>
         <ul>
           {% for task in tasks %}
           <li>{{task.title}}: {{task.content}}</li>
           {% endfor %}
         </ul>
-
-
 
     <h3>Add a new task</h4>
 
@@ -30,7 +26,12 @@
             <input type="submit"/>
         </form>
 
-
+    <h3>Logout</h3>    
+        <form action="/taskmanager/logout/" method="POST">
+            {% csrf_token %}
+            <input name="owner" type="hidden" value={{person.username}}>
+            <button type="submit">Logout</button>
+        </form>    
 
 
     </body>

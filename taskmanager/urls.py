@@ -10,12 +10,13 @@ urlpatterns = [
     path('userform/newuser/', views.addUserView, name='newuser'),
 
     path('user/', views.userView, name='user-view'),    
+    path('user/<username>', views.homeView, name='home-view'),
 
     path('user/addtask/', views.addTaskView, name='addtask'),
 
-    #logout
+   path('logout/', views.logoutView, name='logout')
 
-    #olisiko tällainen hyvä olla?
-    #path('users/<username>', views.someView, name='some-view')
+
+    
     #admin 'admin'
 ]

@@ -22,26 +22,32 @@ def userView(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
 
-    print(username)
-    print(password)
-
     try:
         person = Person.objects.get(username=username)
         if person.password == password:
             person.loggedin = 'True'
             person.save()
-        
-            tasks = Task.objects.filter(owner=person)
 
-            return render(request, 'taskmanager/taskhome.html', {'person': person, 'tasks': tasks })
-        
+            return redirect('/taskmanager/user/' + username)
         else: 
             print('wrong password')
             return redirect('/taskmanager')
     except:
         print('who are you?')
         return redirect('/taskmanager')
-    
+
+def homeView(request, username):
+    try:
+        person = Person.objects.get(username=username)
+        if (person.loggedin == 'True'):
+            tasks = Task.objects.filter(owner=person)
+            return render(request, 'taskmanager/taskhome.html', {'person': person, 'tasks': tasks })
+        else:
+            #joku järkevämpi redirect
+            return redirect('/taskmanager')
+    except: 
+        #joku järkevämpi redirect
+        return redirect('/taskmanager')
 
 def userForm(request):
     return render(request, 'taskmanager/newuser.html')   
@@ -66,10 +72,6 @@ def addTaskView(request):
 
     title = request.POST.get('title')
     content = request.POST.get('content')
-    
-    print(title)
-    print(content)
-    print(person.pk)
 
     #muuta tämä sql-queryksi --> injection vulnerability
     new_task = Task.objects.create(owner=person, title=title, content=content)
@@ -78,3 +80,12 @@ def addTaskView(request):
     tasks = Task.objects.filter(owner=person)
 
     return render(request, 'taskmanager/taskhome.html', {'person': person, 'tasks': tasks })
+
+def logoutView(request):
+    username = request.POST.get('owner')
+    person = Person.objects.get(username=username)
+
+    person.loggedin = 'False'
+    person.save()
+
+    return redirect('index')
