@@ -13,6 +13,8 @@ urlpatterns = [
 
     path('user/addtask/', views.addTaskView, name='addtask'),
 
+    #logout
+
     #olisiko tällainen hyvä olla?
     #path('users/<username>', views.someView, name='some-view')
     #admin 'admin'

@@ -25,15 +25,22 @@ def userView(request):
     print(username)
     print(password)
 
-    #TÄHÄN MUKAAN VARSINAINEN LOGIN-TOIMINNALLISUUS
-    #loggedin = 
+    try:
+        person = Person.objects.get(username=username)
+        if person.password == password:
+            person.loggedin = 'True'
+            person.save()
+        
+            tasks = Task.objects.filter(owner=person)
 
-
-    person = Person.objects.get(username=username)
-
-    tasks = Task.objects.filter(owner=person)
-
-    return render(request, 'taskmanager/taskhome.html', {'person': person, 'tasks': tasks })
+            return render(request, 'taskmanager/taskhome.html', {'person': person, 'tasks': tasks })
+        
+        else: 
+            print('wrong password')
+            return redirect('/taskmanager')
+    except:
+        print('who are you?')
+        return redirect('/taskmanager')
     
 
 def userForm(request):
@@ -71,4 +78,3 @@ def addTaskView(request):
     tasks = Task.objects.filter(owner=person)
 
     return render(request, 'taskmanager/taskhome.html', {'person': person, 'tasks': tasks })
-    #return redirect('/taskmanager/user')
