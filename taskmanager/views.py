@@ -31,10 +31,10 @@ def userView(request):
             return redirect('/taskmanager/user/' + username)
         else: 
             print('wrong password')
-            return redirect('/taskmanager')
+            return redirect('/taskmanager/woops')
     except:
         print('who are you?')
-        return redirect('/taskmanager')
+        return redirect('/taskmanager/woops')
 
 def homeView(request, username):
     try:
@@ -44,10 +44,10 @@ def homeView(request, username):
             return render(request, 'taskmanager/taskhome.html', {'person': person, 'tasks': tasks })
         else:
             #joku järkevämpi redirect
-            return redirect('/taskmanager')
+            return redirect('/taskmanager/woops')
     except: 
         #joku järkevämpi redirect
-        return redirect('/taskmanager')
+        return redirect('/taskmanager/woops')
 
 def userForm(request):
     return render(request, 'taskmanager/newuser.html')   
@@ -89,3 +89,6 @@ def logoutView(request):
     person.save()
 
     return redirect('index')
+
+def woopsView(request):
+    return render(request, 'taskmanager/woops.html')
