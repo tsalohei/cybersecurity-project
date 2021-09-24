@@ -74,11 +74,6 @@ def addTaskView(request):
     query = "INSERT INTO taskmanager_task (owner_id, title, content) \
         values (" + str(person.pk) + ", '" + title + "', '" + content + "')"
 
-    #tästä versiosta tuli browerista error: " + content + " eli tuplahipsut tarvitaan 
-    #pelkillä yksöishipsuilla browseriin taas tulostuu + title + : + content +
-    #miten tähän saisi DROP TABLE task mukaan?
-    #vai riittäisikö että on raakaa sql:ää? ja kertoa että mikä on parempi tapa
-
     cursor = connection.cursor()    
     cursor.execute(query)    
     transaction.commit()
