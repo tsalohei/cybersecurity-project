@@ -6,14 +6,11 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from taskmanager.models import Person, Task
-#from django.views.decorators.csrf import requires_csrf_token
-#from django.views.decorators.csrf import csrf_protect
-
+from django.db import connection,transaction
 
 def index(request):
     template = loader.get_template('taskmanager/index.html')
-    return HttpResponse(template.render())
-    
+    return HttpResponse(template.render())  
 
 def loginFormView(request):
     return render(request, 'taskmanager/login.html')
@@ -43,10 +40,8 @@ def homeView(request, username):
             tasks = Task.objects.filter(owner=person)
             return render(request, 'taskmanager/taskhome.html', {'person': person, 'tasks': tasks })
         else:
-            #joku järkevämpi redirect
             return redirect('/taskmanager/woops')
     except: 
-        #joku järkevämpi redirect
         return redirect('/taskmanager/woops')
 
 def userForm(request):
@@ -54,17 +49,16 @@ def userForm(request):
 
 def addUserView(request):
     username = request.POST.get('username')
-    password = request.POST.get('password')
-    firstname = request.POST.get('firstname')
-    lastname = request.POST.get('lastname')
-
-    #TO-DO:
-    #if username exists already, don't save it
-
-    new_person = Person.objects.create(username=username, password=password, firstname=firstname, lastname=lastname)
-    new_person.save()
-
-    return render(request, 'taskmanager/registrationok.html')
+    try:
+        duplicate_username = Person.objects.get(username=username)
+        return redirect('/taskmanager/woops')
+    except:    
+        password = request.POST.get('password')
+        firstname = request.POST.get('firstname')
+        lastname = request.POST.get('lastname')
+        new_person = Person.objects.create(username=username, password=password, firstname=firstname, lastname=lastname)
+        new_person.save()
+        return render(request, 'taskmanager/registrationok.html')
 
 def addTaskView(request):
     username = request.POST.get('owner')
@@ -73,9 +67,21 @@ def addTaskView(request):
     title = request.POST.get('title')
     content = request.POST.get('content')
 
-    #muuta tämä sql-queryksi --> injection vulnerability
-    new_task = Task.objects.create(owner=person, title=title, content=content)
-    new_task.save()
+    #flaw: injection
+    #new_task = Task.objects.create(owner=person, title=title, content=content)
+    #new_task.save()
+
+    query = "INSERT INTO taskmanager_task (owner_id, title, content) \
+        values (" + str(person.pk) + ", '" + title + "', '" + content + "')"
+
+    #tästä versiosta tuli browerista error: " + content + " eli tuplahipsut tarvitaan 
+    #pelkillä yksöishipsuilla browseriin taas tulostuu + title + : + content +
+    #miten tähän saisi DROP TABLE task mukaan?
+    #vai riittäisikö että on raakaa sql:ää? ja kertoa että mikä on parempi tapa
+
+    cursor = connection.cursor()    
+    cursor.execute(query)    
+    transaction.commit()
 
     tasks = Task.objects.filter(owner=person)
 
