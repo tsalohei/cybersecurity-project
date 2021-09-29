@@ -2,3 +2,5 @@ mysite/__pycache__/
 taskmanager/__pycache__/
 
 db.sqlite3
+
+taskmanager/migrations/__pycache__/
