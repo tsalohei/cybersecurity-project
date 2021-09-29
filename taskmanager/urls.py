@@ -11,9 +11,8 @@ urlpatterns = [
     path('user/<username>', views.homeView, name='home-view'),
     path('user/addtask/', views.addTaskView, name='addtask'),
     path('logout/', views.logoutView, name='logout'),
-    path('woops/', views.woopsView, name='woops')
+    path('woops/', views.woopsView, name='woops'),
+    path('info/', views.infoView, name='info-view'),
+    path('info/<username>', views.personalView, name='personal-view')
 
-
-    
-    #admin 'admin'
 ]

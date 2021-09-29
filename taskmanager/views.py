@@ -93,3 +93,14 @@ def logoutView(request):
 
 def woopsView(request):
     return render(request, 'taskmanager/woops.html')
+
+
+def infoView(request):
+    username = request.GET.get('username')
+
+    return redirect('/taskmanager/info/' + username)
+
+def personalView(request, username):
+    person = Person.objects.get(username=username)
+
+    return render(request, 'taskmanager/info.html', {'person': person})
