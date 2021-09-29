@@ -1,4 +1,4 @@
 mysite/__pycache__/
 taskmanager/__pycache__/
 
-mysite/db.sqlite3
+db.sqlite3
